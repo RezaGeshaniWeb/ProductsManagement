@@ -1,7 +1,7 @@
 # Products API
 
 ## Base URL
-
+https://productsmanagement-1.onrender.com
 
 ## Endpoints
 
