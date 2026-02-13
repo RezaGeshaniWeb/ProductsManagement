@@ -1,7 +1,7 @@
 # Products API
 
 ## Base URL
-https://productsmanagement-pjin.onrender.com
+
 
 ## Endpoints
 
