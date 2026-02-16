@@ -55,7 +55,7 @@ async function update(req, res) {
         const id = req.url.split('/')[3]
         req.on('data', chunk => body += chunk.toString())
         req.on('end', async () => {
-            const parsedBody = JSON.parse(body)
+            const parsedBody = { ...JSON.parse(body) }
             const product = await ProductModel.getById(id)
             if (!product) {
                 res.writeHead(404, { 'content-type': 'application/json' })
