@@ -1,18 +1,21 @@
 const http = require('http')
 const ProductsControllers = require('./controllers/product.controllers')
 const PORT = 3000
+const BASE_URL = '/api/products'
+const DYNAMIC_URL = /\/api\/products\/[0-9]+/
 
 const server = http.createServer((req, res) => {
-    if (req.url == '/api/products' && req.method == 'GET') {
+    const { url, method } = req
+
+    if (url == BASE_URL && method == 'GET') {
         ProductsControllers.get(req, res)
-    } else if (req.url.match(/\/api\/products\/[0-9]+/) && req.method == 'GET') {
+    } else if (url.match(DYNAMIC_URL) && method == 'GET') {
         ProductsControllers.getById(req, res)
-    }
-    else if (req.url == '/api/products' && req.method == 'POST') {
+    } else if (url == BASE_URL && method == 'POST') {
         ProductsControllers.create(req, res)
-    } else if (req.url.match(/\/api\/products\/[0-9]+/) && req.method == 'PUT') {
+    } else if (url.match(DYNAMIC_URL) && method == 'PUT') {
         ProductsControllers.update(req, res)
-    } else if (req.url.match(/\/api\/products\/[0-9]+/) && req.method == 'DELETE') {
+    } else if (url.match(DYNAMIC_URL) && method == 'DELETE') {
         ProductsControllers.remove(req, res)
     } else {
         res.writeHead(404, { 'content-type': 'application/json' })
