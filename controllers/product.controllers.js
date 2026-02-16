@@ -49,6 +49,30 @@ async function create(req, res) {
     }
 }
 
-const ProductControllers = { get, getById, create }
+async function update(req, res) {
+    try {
+        let body = ''
+        const id = req.url.split('/')[3]
+        req.on('data', chunk => body += chunk.toString())
+        req.on('end', async () => {
+            const parsedBody = JSON.parse(body)
+            const product = await ProductModel.getById(id)
+            if (!product) {
+                res.writeHead(404, { 'content-type': 'application/json' })
+                res.write({ message: 'not found product !' })
+                res.end()
+            } else {
+                const result = await ProductModel.update(id, parsedBody)
+                res.writeHead(200, { 'content-type': 'application/json' })
+                res.write(JSON.stringify(result))
+                res.end()
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const ProductControllers = { get, getById, create, update }
 
 module.exports = ProductControllers

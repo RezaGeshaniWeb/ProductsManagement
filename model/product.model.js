@@ -19,6 +19,22 @@ async function create(product) {
     })
 }
 
-const ProductModel = { get, getById, create }
+async function update(id, payload) {
+    return new Promise((res, rej) => {
+        products.map(p => {
+            if (p.id == id) {
+                Object.assign(p, payload)
+            }
+            return p
+        })
+
+        fs.writeFile(`${process.cwd()}/data/products.json`, JSON.stringify(products), err => {
+            if (err) rej(err)
+            else res({ message: 'product updated !' })
+        })
+    })
+}
+
+const ProductModel = { get, getById, create, update }
 
 module.exports = ProductModel
