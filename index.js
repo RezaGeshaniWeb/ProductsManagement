@@ -12,6 +12,8 @@ const server = http.createServer((req, res) => {
         ProductsControllers.create(req, res)
     } else if (req.url.match(/\/api\/products\/[0-9]+/) && req.method == 'PUT') {
         ProductsControllers.update(req, res)
+    } else if (req.url.match(/\/api\/products\/[0-9]+/) && req.method == 'DELETE') {
+        ProductsControllers.remove(req, res)
     } else {
         res.writeHead(404, { 'content-type': 'application/json' })
         res.write(JSON.stringify({ message: 'route not found' }))
