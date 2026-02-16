@@ -31,16 +31,19 @@ async function getById(req, res) {
 
 async function create(req, res) {
     try {
-        await ProductModel.create({
-            id: Date.now(),
-            title: 'new product',
-            category: 'man',
-            price: 2_000_000,
-            quantity: 1
+        let body = ''
+
+        req.on('data', (chunk) => {
+            body += chunk.toString()
         })
-        res.writeHead(201, { 'content-type': 'application/json' })
-        res.write(JSON.stringify({ message: 'product created !' }))
-        res.end()
+
+        req.on('end', async () => {
+            const product = { id: Date.now(), ...JSON.parse(body) }
+            const result = await ProductModel.create(product)
+            res.writeHead(201, { 'content-type': 'application/json' })
+            res.write(JSON.stringify(result))
+            res.end()
+        })
     } catch (error) {
         console.log(error)
     }
